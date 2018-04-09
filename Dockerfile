@@ -23,7 +23,7 @@ ENV LD_LIBRARY_PATH /usr/lib/x86_64-linux-gnu:/usr/lib/i386-linux-gnu${LD_LIBRAR
 # below sourced from https://gitlab.com/nvidia/opengl/blob/ubuntu14.04/1.0-glvnd/runtime/Dockerfile
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        git \
+        git wget\
         ca-certificates \
         make \
         automake \
@@ -33,6 +33,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python \
         libxext-dev \
         libx11-dev \
+        gedit \
         x11proto-gl-dev && \
     rm -rf /var/lib/apt/lists/*
 
@@ -104,3 +105,6 @@ ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64${LD_LIBRARY_PA
 
 # nvidia-container-runtime
 ENV NVIDIA_REQUIRE_CUDA "cuda>=8.0"
+
+RUN sed -i '/export GAZEBO_MODEL_DATABASE_URI=/c\export GAZEBO_MODEL_DATABASE_URI=""' /usr/share/gazebo-2.2/setup.sh
+RUN echo "source /usr/share/gazebo-2.2/setup.sh" >> /etc/bash.bashrc
